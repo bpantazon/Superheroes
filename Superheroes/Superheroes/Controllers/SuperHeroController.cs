@@ -9,6 +9,8 @@ namespace Superheroes.Controllers
 {
     public class SuperHeroController : Controller
     {
+        IList<Superhero> heroList = new List<Superhero>() { };
+        
         ApplicationDbContext db;
         public SuperHeroController()
         {
@@ -17,13 +19,25 @@ namespace Superheroes.Controllers
         // GET: SuperHero
         public ActionResult Index()
         {
-            return View();
+            try
+            {
+                foreach (var hero in db.Superhero)
+                {
+                    heroList.Add(hero);
+                }
+            }
+            catch
+            {
+                return View();
+            }
+            return View(heroList);
         }
 
         // GET: SuperHero/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var hero = db.Superhero.Where(s => s.Id == id).FirstOrDefault();
+            return View(hero);
         }
 
         // GET: SuperHero/Create
@@ -52,8 +66,8 @@ namespace Superheroes.Controllers
         // GET: SuperHero/Edit/5
         public ActionResult Edit(int id)
         {
-           
-            return View();
+            var hero = db.Superhero.Where(s => s.Id == id).FirstOrDefault();
+            return View(hero);
         }
 
         // POST: SuperHero/Edit/5
@@ -63,7 +77,15 @@ namespace Superheroes.Controllers
             try
             {
                 // TODO: Add update logic here
-                //db.Superhero.Where()
+                
+                var updatedHero = db.Superhero.Where(s => s.Id == hero.Id).FirstOrDefault();
+                hero.Name = updatedHero.Name;
+                hero.AlterEgo = updatedHero.AlterEgo;
+                hero.PrimaryAbility = updatedHero.PrimaryAbility;
+                var secondaryAbility = updatedHero.SecondaryAbility;
+                var catchPhrase = updatedHero.Catchphrase;
+                
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
@@ -75,17 +97,20 @@ namespace Superheroes.Controllers
         // GET: SuperHero/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var hero = db.Superhero.Where(s => s.Id == id).FirstOrDefault();
+            return View(hero);
         }
 
         // POST: SuperHero/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, Superhero hero)
         {
             try
             {
                 // TODO: Add delete logic here
-
+                hero = db.Superhero.Where(s => s.Id == hero.Id).Single();
+                db.Superhero.Remove(hero);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
