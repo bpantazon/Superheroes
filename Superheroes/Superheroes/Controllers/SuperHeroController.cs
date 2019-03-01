@@ -79,9 +79,9 @@ namespace Superheroes.Controllers
                 // TODO: Add update logic here
                 
                 var updatedHero = db.Superhero.Where(s => s.Id == hero.Id).FirstOrDefault();
-                hero.Name = updatedHero.Name;
-                hero.AlterEgo = updatedHero.AlterEgo;
-                hero.PrimaryAbility = updatedHero.PrimaryAbility;
+                var name = updatedHero.Name;
+                var alterEgo = updatedHero.AlterEgo;
+                var primaryAbility = updatedHero.PrimaryAbility;
                 var secondaryAbility = updatedHero.SecondaryAbility;
                 var catchPhrase = updatedHero.Catchphrase;
                 
