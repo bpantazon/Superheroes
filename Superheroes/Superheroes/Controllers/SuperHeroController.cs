@@ -77,16 +77,18 @@ namespace Superheroes.Controllers
             try
             {
                 // TODO: Add update logic here
-                
-                var updatedHero = db.Superhero.Where(s => s.Id == hero.Id).FirstOrDefault();
-                var name = updatedHero.Name;
-                var alterEgo = updatedHero.AlterEgo;
-                var primaryAbility = updatedHero.PrimaryAbility;
-                var secondaryAbility = updatedHero.SecondaryAbility;
-                var catchPhrase = updatedHero.Catchphrase;
-                
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                var updatedHero = db.Superhero.Where(s => s.Id == id).Single();
+
+                    updatedHero.Name = hero.Name;
+                    updatedHero.AlterEgo = hero.AlterEgo;
+                    updatedHero.PrimaryAbility = hero.PrimaryAbility;
+                    updatedHero.SecondaryAbility = hero.SecondaryAbility;
+                    updatedHero.Catchphrase = hero.Catchphrase;
+                    
+                             
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
             }
             catch
             {
